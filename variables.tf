@@ -42,7 +42,7 @@ default     =  1
 variable "vm-name-prefix" {
 type = string
 description = "Name of VM prefix"
-default     =  "playtftest"
+default     =  "ANSIBLE"
 }
 variable "vm-datastore" {
 type = string

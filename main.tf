@@ -9,7 +9,7 @@ vsphere_server = var.vsphere-vcenter
 # If you have a self-signed cert
 allow_unverified_ssl = var.vsphere-unverified-ssl
 }
-# Define VMware vSphere
+# Define Data Sources VMware vSphere
 data "vsphere_datacenter" "dc" {
 name = var.vsphere-datacenter
 }
@@ -26,13 +26,12 @@ name = var.vm-network
 datacenter_id = data.vsphere_datacenter.dc.id
 }
 data "vsphere_virtual_machine" "template" {
-name = "${var.vm-template-name}"
+name = var.vm-template-name
 datacenter_id = data.vsphere_datacenter.dc.id
 }
 
 
-
-# Create VMs
+# Define Provisioning  Scripts for Create VMs and looping instance so we can acchive multiple VM 
 resource "vsphere_virtual_machine" "vm" {
 count = var.vm-count
 name = "${var.vm-name}-${count.index + 1}"
@@ -62,20 +61,19 @@ clone {
     }
     
      network_interface {
-        ipv4_address = "192.168.234.${39 + count.index}"
-        ipv4_netmask = "25"
+        ipv4_address = "192.168.122.${102 + count.index}"
+        ipv4_netmask = "24"
       }
 
-      ipv4_gateway = "192.168.234.126"
+      ipv4_gateway = "192.168.122.1"
 	  dns_server_list = ["8.8.8.8","8.8.4.4"]
-	  dns_suffix_list = ["${var.vm-domain}"]
   }
   
  }
 
  tags = [        
     "${vsphere_tag.tag-environment-dev.id}",
-    "${vsphere_tag.tag-environment-dev.id}"   
+    "${vsphere_tag.tag-role-ansible.id}"
   ]
 
   provisioner "remote-exec" {
@@ -86,9 +84,7 @@ clone {
 			insecure = true
 			user	= var.vm-user
 			password = var.vm-password
-			script_path = "/root/status-deployment.sh"
+			script_path = "/tmp/status-deployment.sh"
       }    
   }
 }
-
-
