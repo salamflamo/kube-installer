@@ -91,3 +91,4 @@ variable "vm-user" {
 type = string
 description = "VM username"
 }
+

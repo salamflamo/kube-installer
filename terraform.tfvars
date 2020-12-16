@@ -1,29 +1,29 @@
 # VMware VMs configuration #
-vm-count = "2"
-vm-name = "ANSIBLE"
-vm-template-name = "ANSIBLE-MASTER"
+vm-count = "5"
+vm-name = "ansible"
+vm-template-name = "rhce8"
 vm-cpu = "1"
 vm-ram = "1024"
-vm-guest-id = "rhel7_64Guest"
+vm-guest-id = "rhel8_64Guest"
 # VMware vSphere configuration #
 # VMware vCenter IP/FQDN
-vsphere-vcenter = "192.168.122.100"
+vsphere-vcenter = "192.168.234.76"
 # VMware vSphere username used to deploy the infrastructure
-vsphere-user = "administrator@vsphere.local"
+vsphere-user = "administrator@versasec.local"
 # VMware vSphere password used to deploy the infrastructure
-vsphere-password = "P@ssw0rd"
+vsphere-password = "P@55w0rd1!"
 # Skip the verification of the vCenter SSL certificate (true/false)
 vsphere-unverified-ssl = "true"
 # vSphere datacenter name where the infrastructure will be deployed 
-vsphere-datacenter = "lab.gg"
+vsphere-datacenter = "DC"
 # vSphere cluster name where the infrastructure will be deployed
-vsphere-cluster = "cluster.gg"
+vsphere-cluster = "CLTR"
 # vSphere Datastore used to deploy VMs 
-vm-datastore = "datastore1"
+vm-datastore = "EMC-DS1"
 # vSphere Network used to deploy VMs 
 vm-network = "VM Network"
 # Linux virtual machine domain name
-vm-domain = "mastersystem.local"
+vm-domain = "loc"
 # Login Account into VM
 vm-user = "root"
 vm-password = "server"
