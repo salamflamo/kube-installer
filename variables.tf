@@ -34,7 +34,13 @@ default = "Templates"
 #================================#
 # VMware vSphere virtual machine #
 #================================#
-variable "vm-count" {
+variable "vm1-count" {
+type = string
+description = "Number of VM"
+default     =  1
+}
+
+variable "vm2-count" {
 type = string
 description = "Number of VM"
 default     =  1

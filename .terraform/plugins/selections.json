@@ -3,6 +3,10 @@
     "hash": "h1:GnUYWtyIRXT2ruijra2HtwGDb4z3Qk62ZFc1lAOlevo=",
     "version": "3.0.0"
   },
+  "registry.terraform.io/hashicorp/time": {
+    "hash": "h1:IvRLj0HXlzF+MVqLjUkKBb42PVeKPbPq5uK01i4QDjM=",
+    "version": "0.6.0"
+  },
   "registry.terraform.io/hashicorp/vsphere": {
     "hash": "h1:jsbMsGNX6WFGfmmlB/mC6uLLRXIyRSOd846SvVFFfSY=",
     "version": "1.24.3"

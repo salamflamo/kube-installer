@@ -1,0 +1,5 @@
+*.tfstate 
+scripts/audit-cis.sh
+scripts/register-rhel.sh
+scripts/show-config-iface.sh
+auto-deploy.txtx
