@@ -45,6 +45,12 @@ type = string
 description = "Number of VM"
 default     =  1
 }
+
+variable "vm3-count" {
+type = string
+description = "Number of VM"
+default     =  1
+}
 variable "vm-name-prefix" {
 type = string
 description = "Name of VM prefix"
@@ -68,10 +74,21 @@ type = string
 description = "Number of vCPU for the vSphere virtual machines"
 default = "1"
 }
-variable "vm-ram" {
+variable "vm-ram1" {
 type = string
 description = "Amount of RAM for the vSphere virtual machines (example: 2048)"
 }
+
+variable "vm-ram2" {
+type = string
+description = "Amount of RAM for the vSphere virtual machines (example: 2048)"
+}
+
+variable "vm-ram3" {
+type = string
+description = "Amount of RAM for the vSphere virtual machines (example: 2048)"
+}
+
 variable "vm-name" {
 type = string
 description = "The name of the vSphere virtual machines and the hostname of the machine"

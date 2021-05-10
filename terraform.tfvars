@@ -1,10 +1,13 @@
 # VMware VMs configuration #
-vm1-count = "3"
+vm1-count = "2"
 vm2-count = "2"
+vm3-count = "1"
 vm-name = "ansible"
 vm-template-name = "ansible"
 vm-cpu = "1"
-vm-ram = "1024"
+vm-ram1 = "1024"
+vm-ram2 = "2024"
+vm-ram3 = "512"
 vm-guest-id = "rhel8_64Guest"
 # VMware vSphere configuration #
 # VMware vCenter IP/FQDN

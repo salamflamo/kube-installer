@@ -34,7 +34,7 @@ echo "Start of sidle.shl"
 threshold=5
 log=/root/sidle.log
 userid=automation
-inactive=`who -a | grep $userid | cut -c 45-46 | sed 's/ //g'`
+inactive='who -a | grep $userid | cut -c 45-46 | sed 's/ //g''
 
 if [ "$inactive" != "" ]; then
 
@@ -64,7 +64,7 @@ echo "Start of sidle.shl"
 threshold=5
 log=/root/sidle.log
 userid=root
-inactive=`who -a | grep $userid | cut -c 45-46 | sed 's/ //g'`
+inactive='who -a | grep $userid | cut -c 45-46 | sed 's/ //g''
 
 if [ "$inactive" != "" ]; then
 
