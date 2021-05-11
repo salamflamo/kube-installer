@@ -34,7 +34,7 @@ locals {
     datastore           = "EMC-DS1"
     vnic                = "VM Network"
     template            = "os_images_sit"
-    local_disk_label     = "OS-disk"
+    local_disk_label     = "OS-disk0"
     domain              = "corp.bi.go.id"
     ipv4_netmask        = "25"
     dns                 = ["192.168.234.74", "8.8.8.8"]
@@ -54,7 +54,7 @@ variable "vms" {
         ipv4_data       = "192.168.234.77"
         cpu_count       = "1"
         memory          = "1"
-        app_disk_label  = "ICE-XS-UPF.vmdk"
+        app_disk_label  = "ICE-XS-UPF-disk1.vmdk"
         app_disk_size   = "2"
       },
      CCENTER = {
@@ -62,7 +62,7 @@ variable "vms" {
         ipv4_data       = "192.168.234.78"
         cpu_count       = "1"
         memory          = "1"
-        app_disk_label  = "CCENTER.vmdk"
+        app_disk_label  = "CCENTER-disk1.vmdk"
         app_disk_size   = "1"
       },
       RT-DB = {
@@ -70,7 +70,7 @@ variable "vms" {
         ipv4_data       = "192.168.234.79"
         cpu_count       = "1"
         memory          = "1"
-        app_disk_label  = "RT-DB.vmdk"
+        app_disk_label  = "RT-DB-disk1.vmdk"
         app_disk_size   = "3"
       },
       NRT-UI-DB = {
@@ -78,7 +78,7 @@ variable "vms" {
         ipv4_data       = "192.168.234.81"
         cpu_count       = "1"
         memory          = "1"
-        app_disk_label  = "NRT-UI-DB.vmdk"
+        app_disk_label  = "NRT-UI-DB-disk1.vmdk"
         app_disk_size   = "1"
       },
     }

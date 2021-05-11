@@ -136,8 +136,9 @@ disk {
 
 #Digunakan untuk disk app
 disk {
-    name = each.value.app_disk_label
+    
     size = each.value.app_disk_size
+    label = each.value.app_disk_label
     unit_number = 1
   }
 
