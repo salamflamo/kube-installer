@@ -12,8 +12,8 @@ terraform {
 # Defisnikan variable untuk menghubungkan ke vSphere vCenter
 provider "vsphere" {
 user = var.vsphere_username
-password = var.vsphere_username
-vsphere_server = "192.168.234.74"
+password = var.vsphere_password
+vsphere_server = "192.168.234.76"
 # If you have a self-signed cert
 allow_unverified_ssl = true
 }
@@ -37,10 +37,10 @@ data "vsphere_compute_cluster" "compute_cluster" {
   datacenter_id = data.vsphere_datacenter.dc.id
 }
 # Defisikan Data Sources Resource Pool Cluster VMware vSphere
-data "vsphere_resource_pool" "pool" {
-  name          = local.resource_pool_id
-  datacenter_id = data.vsphere_datacenter.dc.id
-}
+#data "vsphere_resource_pool" "pool" {
+#  name          = local.resource_pool_id
+#  datacenter_id = data.vsphere_datacenter.dc.id
+#}
 
 # Defisikan Data Sources Datastrore VMware vSphere
 data "vsphere_datastore" "datastore" {
@@ -97,8 +97,8 @@ for_each = var.vms
 
 # Penamaan VM
 name = each.value.name
-datacenter_id = data.vsphere_datacenter.dc.id
-resource_pool_id = data.vsphere_resource_pool.pool.id
+#datacenter_id = data.vsphere_datacenter.dc.id
+resource_pool_id = data.vsphere_compute_cluster.compute_cluster.resource_pool_id
 datastore_id = data.vsphere_datastore.datastore.id
 
 tags = [        
