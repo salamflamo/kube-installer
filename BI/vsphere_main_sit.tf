@@ -1,3 +1,14 @@
+terraform {
+  required_providers {
+    vsphere = {
+      source  = "hashicorp/vsphere"
+      version = "1.26.0"
+    }
+  }
+  required_version = ">= 0.12"
+}
+
+
 # Defisnikan variable untuk menghubungkan ke vSphere vCenter
 provider "vsphere" {
 user = var.vsphere_username
@@ -12,38 +23,39 @@ allow_unverified_ssl = true
 
 # Defisikan Data Sources Nama Datacenter VMware vSphere
 data "vsphere_datacenter" "dc" {
-  name = locals.dc
+  name = local.dc
 }
+
 # Defisikan Data Sources HOST ESXI Cluster VMware vSphere
 data "vsphere_host" "hosts" {
-  name          = locals.compute_host
+  name          = local.compute_host
   datacenter_id = data.vsphere_datacenter.dc.id
 }
 # Defisikan Data Sources Cluster VMware vSphere
 data "vsphere_compute_cluster" "compute_cluster" {
-  name          = locals.cluster
+  name          = local.cluster
   datacenter_id = data.vsphere_datacenter.dc.id
 }
 # Defisikan Data Sources Resource Pool Cluster VMware vSphere
 data "vsphere_resource_pool" "pool" {
-  name          = locals.resource_pool_id
+  name          = local.resource_pool_id
   datacenter_id = data.vsphere_datacenter.dc.id
 }
 
 # Defisikan Data Sources Datastrore VMware vSphere
 data "vsphere_datastore" "datastore" {
-  name          = locals.datastore
+  name          = local.datastore
   datacenter_id = data.vsphere_datacenter.dc.id
 }
 # Defisikan Data Sources Network for Guest VM VMware vSphere
 data "vsphere_network" "eth0" {
-  name          = locals.vnic
+  name          = local.vnic
   datacenter_id = data.vsphere_datacenter.dc.id
 }
 
 # Defisikan Data Sources VM Template VMware vSphere
 data "vsphere_virtual_machine" "template" {
-  name          = locals.template
+  name          = local.template
   datacenter_id = data.vsphere_datacenter.dc.id
 }
 
@@ -85,10 +97,9 @@ for_each = var.vms
 
 # Penamaan VM
 name = each.value.name
-
-resource_pool_id = data.vsphere_compute_cluster.cluster.resource_pool_id
+datacenter_id = data.vsphere_datacenter.dc.id
+resource_pool_id = data.vsphere_resource_pool.pool.id
 datastore_id = data.vsphere_datastore.datastore.id
-datacenter_id = data.vsphere_datacenter.datacenter.id
 
 tags = [        
     "${vsphere_tag.environment.id}",
@@ -100,8 +111,8 @@ num_cpus = each.value.cpu_count
 memory = each.value.memory
 
 guest_id = data.vsphere_virtual_machine.template.guest_id
-cpu_hot_add_enabled        = var.cpu_hot_add_enabled
-memory_hot_add_enabled     = var.memory_hot_add_enabled
+cpu_hot_add_enabled        = local.cpu_hot_add_enabled
+memory_hot_add_enabled     = local.memory_hot_add_enabled
 
 scsi_type                  = data.vsphere_virtual_machine.template.scsi_type
 enable_disk_uuid = true
@@ -117,7 +128,7 @@ network_interface {
 
 #Digunakan untuk so resources_static disk
 disk {
-   label            = locals.local_disk_label
+   label            = local.local_disk_label
    size             = data.vsphere_virtual_machine.template.disks.0.size
    eagerly_scrub    = data.vsphere_virtual_machine.template.disks.0.eagerly_scrub
    thin_provisioned = data.vsphere_virtual_machine.template.disks.0.thin_provisioned
@@ -138,33 +149,21 @@ clone {
     
     linux_options {
       host_name = each.value.name
-      domain = locals.domain
+      domain = local.domain
     }
     
      network_interface {
         ipv4_address = each.value.ipv4_data
-        ipv4_netmask = locals.ipv4_netmask
+        ipv4_netmask = local.ipv4_netmask
       }
 
-      ipv4_gateway = locals.ipv4_gw
-	  dns_server_list = locals.dns
+      ipv4_gateway = local.ipv4_gw
+	  dns_server_list = local.dns
   }
 }
 
-#Digunakan agar provisioner script berjalan setelah ip address dari vm sudah up
-resource "null_resource" "vm" {
-  triggers {
-    public_ip = "${vsphere_virtual_machine.vm.default_ip_address}"
-  }
 
-#Digunakan untuk konfigurasi tambahan setelah VM Up
-  provisioner "local-exec" {
-    command = "start-sleep 120"
-  interpreter = ["PowerShell", "-Command"]
-  }
-}
- 
- provisioner "file" {
+  provisioner "file" {
     source      = "scripts_post_conf/part_second_disk.sh"
     destination = "/tmp/part_second_disk.sh"
     connection {
@@ -178,6 +177,7 @@ resource "null_resource" "vm" {
       }  
 }
 
+
    provisioner "remote-exec" {
     inline = [
       "chmod +x /tmp/part_second_disk.sh",
@@ -187,12 +187,20 @@ resource "null_resource" "vm" {
 			host = self.default_ip_address
       type = "ssh"
 			insecure = true
+      agent = false
       timeout = "5m"
 			user	= var.vm_username
 			password = var.vm_password
       }  
-
-  }
-
+    }
 
 }
+
+
+
+
+
+  
+
+
+

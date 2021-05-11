@@ -27,7 +27,7 @@ variable "vm_password" {
 
 #Definisikan variable static untuk setiap resource dari VM yang tidak adakn berubah - berubah
 locals {
-    datacenter          = "LAB-MSI"
+    dc                  = "LAB-MSI"
     compute_host        = "192.168.230.11"
     cluster             = "LAB-MSI"
     resource_pool_id    = "sit_resource_pool"
@@ -39,6 +39,8 @@ locals {
     ipv4_netmask        = "25"
     dns                 = ["192.168.234.74", "8.8.8.8"]
     ipv4_gw             = "192.168.234.126"
+    cpu_hot_add_enabled        = "true"
+    memory_hot_add_enabled     = "true"
     
 }
 
