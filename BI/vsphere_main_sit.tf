@@ -168,7 +168,7 @@ clone {
     source      = "scripts_post_conf/part_second_disk.sh"
     destination = "/tmp/part_second_disk.sh"
     connection {
-			host = self.default_ip_address
+			host = each.value.ipv4_data
       type = "ssh"
 			insecure = true
       timeout = "5m"
@@ -185,7 +185,7 @@ clone {
       "/bin/bash /tmp/part_second_disk.sh args",
     ]
   connection {
-			host = self.default_ip_address
+			host = each.value.ipv4_data
       type = "ssh"
 			insecure = true
       agent = false

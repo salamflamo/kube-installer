@@ -53,7 +53,7 @@ variable "vms" {
         name            = "ICE-XS-UPF"
         ipv4_data       = "192.168.234.77"
         cpu_count       = "1"
-        memory          = "1"
+        memory          = "1024"
         app_disk_label  = "ICE-XS-UPF-disk1.vmdk"
         app_disk_size   = "2"
       },
@@ -61,7 +61,7 @@ variable "vms" {
         name            = "CCENTER"
         ipv4_data       = "192.168.234.78"
         cpu_count       = "1"
-        memory          = "1"
+        memory          = "1024"
         app_disk_label  = "CCENTER-disk1.vmdk"
         app_disk_size   = "1"
       },
@@ -69,7 +69,7 @@ variable "vms" {
         name            = "RT-DB"
         ipv4_data       = "192.168.234.79"
         cpu_count       = "1"
-        memory          = "1"
+        memory          = "1024"
         app_disk_label  = "RT-DB-disk1.vmdk"
         app_disk_size   = "3"
       },
@@ -77,7 +77,7 @@ variable "vms" {
         name            = "NRT-UI-DB"
         ipv4_data       = "192.168.234.81"
         cpu_count       = "1"
-        memory          = "1"
+        memory          = "1024"
         app_disk_label  = "NRT-UI-DB-disk1.vmdk"
         app_disk_size   = "1"
       },
