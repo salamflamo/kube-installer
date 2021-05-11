@@ -159,7 +159,8 @@ clone {
       }
 
       ipv4_gateway = local.ipv4_gw
-	  dns_server_list = local.dns
+	    dns_server_list = local.dns
+      dns_suffix_list = local.domain
   }
 }
 
