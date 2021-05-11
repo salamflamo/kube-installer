@@ -2,7 +2,7 @@
 provider "vsphere" {
 user = var.vsphere_username
 password = var.vsphere_username
-vsphere_server = 10.101.101.10
+vsphere_server = "192.168.234.74"
 # If you have a self-signed cert
 allow_unverified_ssl = true
 }
@@ -12,38 +12,38 @@ allow_unverified_ssl = true
 
 # Defisikan Data Sources Nama Datacenter VMware vSphere
 data "vsphere_datacenter" "dc" {
-  name = resources_static.dc
+  name = locals.dc
 }
 # Defisikan Data Sources HOST ESXI Cluster VMware vSphere
 data "vsphere_host" "hosts" {
-  name          = resources_static.compute_host
+  name          = locals.compute_host
   datacenter_id = data.vsphere_datacenter.dc.id
 }
 # Defisikan Data Sources Cluster VMware vSphere
 data "vsphere_compute_cluster" "compute_cluster" {
-  name          = resources_static.cluster
+  name          = locals.cluster
   datacenter_id = data.vsphere_datacenter.dc.id
 }
 # Defisikan Data Sources Resource Pool Cluster VMware vSphere
 data "vsphere_resource_pool" "pool" {
-  name          = resources_static.resource_pool_id
+  name          = locals.resource_pool_id
   datacenter_id = data.vsphere_datacenter.dc.id
 }
 
 # Defisikan Data Sources Datastrore VMware vSphere
 data "vsphere_datastore" "datastore" {
-  name          = resources_static.datastore
+  name          = locals.datastore
   datacenter_id = data.vsphere_datacenter.dc.id
 }
 # Defisikan Data Sources Network for Guest VM VMware vSphere
 data "vsphere_network" "eth0" {
-  name          = resources_static.vnic
+  name          = locals.vnic
   datacenter_id = data.vsphere_datacenter.dc.id
 }
 
 # Defisikan Data Sources VM Template VMware vSphere
 data "vsphere_virtual_machine" "template" {
-  name          = resources_static.template
+  name          = locals.template
   datacenter_id = data.vsphere_datacenter.dc.id
 }
 
@@ -79,7 +79,7 @@ resource "vsphere_tag" "lokasi" {
 }
 
 #Definisikan untuk pembuatan Virtual Machine
-resource "vsphere_virtual_machine" "sit" {
+resource "vsphere_virtual_machine" "vm" {
 
 for_each = var.vms
 
@@ -100,7 +100,10 @@ num_cpus = each.value.cpu_count
 memory = each.value.memory
 
 guest_id = data.vsphere_virtual_machine.template.guest_id
+cpu_hot_add_enabled        = var.cpu_hot_add_enabled
+memory_hot_add_enabled     = var.memory_hot_add_enabled
 
+scsi_type                  = data.vsphere_virtual_machine.template.scsi_type
 enable_disk_uuid = true
 #Digunakan untuk waktu tunggu sampai dengan interface dan ip address up ketika pembuatan ke VM selanjutnya
 wait_for_guest_ip_timeout = -1
@@ -114,7 +117,7 @@ network_interface {
 
 #Digunakan untuk so resources_static disk
 disk {
-   label            = resources_static.local_disk_label
+   label            = locals.local_disk_label
    size             = data.vsphere_virtual_machine.template.disks.0.size
    eagerly_scrub    = data.vsphere_virtual_machine.template.disks.0.eagerly_scrub
    thin_provisioned = data.vsphere_virtual_machine.template.disks.0.thin_provisioned
@@ -135,16 +138,23 @@ clone {
     
     linux_options {
       host_name = each.value.name
-      domain = resources_static.domain
+      domain = locals.domain
     }
     
      network_interface {
         ipv4_address = each.value.ipv4_data
-        ipv4_netmask = resources_static.ipv4_netmask
+        ipv4_netmask = locals.ipv4_netmask
       }
 
-      ipv4_gateway = resources_static.ipv4_gw
-	  dns_server_list = resources_static.dns
+      ipv4_gateway = locals.ipv4_gw
+	  dns_server_list = locals.dns
+  }
+}
+
+#Digunakan agar provisioner script berjalan setelah ip address dari vm sudah up
+resource "null_resource" "vm" {
+  triggers {
+    public_ip = "${vsphere_virtual_machine.vm.default_ip_address}"
   }
 
 #Digunakan untuk konfigurasi tambahan setelah VM Up
@@ -152,6 +162,7 @@ clone {
     command = "start-sleep 120"
   interpreter = ["PowerShell", "-Command"]
   }
+}
  
  provisioner "file" {
     source      = "scripts_post_conf/part_second_disk.sh"
@@ -161,8 +172,8 @@ clone {
       type = "ssh"
 			insecure = true
       timeout = "5m"
-			user	= root
-			password = server
+			user	= var.vm_username
+			password = var.vm_password
       script_path = "/tmp/part_second_disk.sh"
       }  
 }
@@ -182,5 +193,6 @@ clone {
       }  
 
   }
+
 
 }
