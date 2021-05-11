@@ -5,18 +5,18 @@
       "vsphere-user": "administrator@vsphere.versasec.local",
       "vsphere-password": "P@55w0rd1!!!",
       
-      "vsphere-datacenter": "DC",
-      "vsphere-cluster": "LAB MSI",
+      "vsphere-datacenter": "LAB-MSI",
+      "vsphere-cluster": "LAB-MSI",
       "vsphere-network": "VM Network",
       "vsphere-datastore": "EMC-DS1",
-        "folder": "SIT/",
+      "folder": "SIT/",
       
       "vm-name": "os_images_sit",
       "vm-cpu-num": "1",
       "vm-mem-size": "1024",
-      "vm-disk-size": "11024",
+      "vm-disk-size": "62464",
       
-      "iso_url": "[EMC-DS1] ISO/rhel-8.1-x86_64-dvd.iso"
+      "iso_url": "[EMC-DS1] ISO/rhel-server-7.7-x86_64-dvd.iso"
     },
   
     "builders": [
@@ -51,12 +51,12 @@
         "disk_thin_provisioned": true,
         "network_card": "vmxnet3",
         
-         "boot_order": "disk,cdrom.floopy",
+         "boot_order": "disk,cdrom,floopy",
          "convert_to_template": true,
          "iso_paths": "{{user `iso_url`}}",
          "floppy_files": ["kickstart_sit_rhel7_8.cfg"],
         "boot_command": [
-        "<wait5><tab>linux ip=192.168.234.77::192.168.234.126:255.255.255.128:template:eth0:none nameserver=192.168.234.74 biosdevname=0 net.ifnames=0 ks=hd:fd0:/kickstart_sit_rhel7_8.cfg inst.sshd=1<enter>"
+        "<wait5><tab>linux ip=192.168.234.79::192.168.234.126:255.255.255.128:template:eth0:none nameserver=192.168.234.74 biosdevname=0 net.ifnames=0 ks=hd:fd0:/kickstart_sit_rhel7_8.cfg inst.sshd=1<enter>"
         ]
       }
     ],
