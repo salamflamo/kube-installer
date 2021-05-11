@@ -1,0 +1,79 @@
+
+{
+    "variables": {
+      "vsphere-server": "192.168.234.76",
+      "vsphere-user": "administrator@vsphere.versasec.local",
+      "vsphere-password": "P@55w0rd1!!!",
+      
+      "vsphere-datacenter": "DC",
+      "vsphere-cluster": "LAB MSI",
+      "vsphere-network": "VM Network",
+      "vsphere-datastore": "EMC-DS1",
+        "folder": "SIT/",
+      
+      "vm-name": "os_images_sit",
+      "vm-cpu-num": "1",
+      "vm-mem-size": "1024",
+      "vm-disk-size": "11024",
+      
+      "iso_url": "[EMC-DS1] ISO/rhel-8.1-x86_64-dvd.iso"
+    },
+  
+    "builders": [
+      {
+        "type": "vsphere-iso",
+    
+        "vcenter_server": "{{user `vsphere-server`}}",
+        "username": "{{user `vsphere-user`}}",
+        "password": "{{user `vsphere-password`}}",
+        "insecure_connection": "true",
+  
+        "datacenter": "{{user `vsphere-datacenter`}}",
+        "cluster": "{{user `vsphere-cluster`}}",
+        "network": "{{user `vsphere-network`}}",
+        "datastore": "{{user `vsphere-datastore`}}",
+        
+        "vm_name": "{{user `vm-name`}}",
+        "notes": "CUSTOM IMAGE via Packer",
+  
+        "guest_os_type": "rhel7_64Guest",
+         "folder": "{{user `folder`}}",
+  
+        "ssh_username": "root",
+        "ssh_password": "server",
+        "ssh_timeout": "15m",
+  
+        "CPUs": "{{user `vm-cpu-num`}}",
+        "RAM": "{{user `vm-mem-size`}}",
+        "RAM_reserve_all": false,
+        "disk_controller_type": "pvscsi",
+        "disk_size": "{{user `vm-disk-size`}}",
+        "disk_thin_provisioned": true,
+        "network_card": "vmxnet3",
+        
+         "boot_order": "disk,cdrom.floopy",
+         "convert_to_template": true,
+         "iso_paths": "{{user `iso_url`}}",
+         "floppy_files": ["kickstart_sit_rhel7_8.cfg"],
+        "boot_command": [
+        "<wait5><tab>linux ip=192.168.234.77::192.168.234.126:255.255.255.128:template:eth0:none nameserver=192.168.234.74 biosdevname=0 net.ifnames=0 ks=hd:fd0:/kickstart_sit_rhel7_8.cfg inst.sshd=1<enter>"
+        ]
+      }
+    ],
+    "provisioners": [
+      {
+        "type": "file",
+        "source": "scripts_post_conf/packer_shell.sh",
+        "destination": "/tmp/packer_shell.sh"
+      },
+      {
+      "type": "shell",
+      "inline": [
+        "chmod u+x /tmp/packer_shell.sh",
+        "/bin/bash /tmp/packer_shell.sh args"
+      ]
+    }
+    ]
+  
+  }
+  

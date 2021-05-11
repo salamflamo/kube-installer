@@ -8,7 +8,7 @@ vm-cpu = "1"
 vm-ram1 = "1024"
 vm-ram2 = "2024"
 vm-ram3 = "512"
-vm-guest-id = "rhel8_64Guest"
+vm-guest-id = "rhel7_64Guest"
 # VMware vSphere configuration #
 # VMware vCenter IP/FQDN
 vsphere-vcenter = "192.168.234.76"
@@ -21,7 +21,7 @@ vsphere-unverified-ssl = "true"
 # vSphere datacenter name where the infrastructure will be deployed 
 vsphere-datacenter = "DC"
 # vSphere cluster name where the infrastructure will be deployed
-vsphere-cluster = "LAB MSI"
+vsphere-cluster = "All Cluster"
 # vSphere Datastore used to deploy VMs 
 vm-datastore = "EMC-DS1"
 # vSphere Network used to deploy VMs 

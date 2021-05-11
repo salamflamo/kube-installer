@@ -42,8 +42,8 @@ num_cpus = var.vm-cpu
 memory = var.vm-ram1
 guest_id = var.vm-guest-id
 enable_disk_uuid = true
-wait_for_guest_ip_timeout = 120
-wait_for_guest_net_timeout = 0
+wait_for_guest_ip_timeout = -1
+wait_for_guest_net_timeout = -1
 wait_for_guest_net_routable = false
 network_interface {
   network_id = data.vsphere_network.network.id
@@ -150,8 +150,8 @@ num_cpus = var.vm-cpu
 memory = var.vm-ram2
 guest_id = var.vm-guest-id
 enable_disk_uuid = true
-wait_for_guest_ip_timeout = 120
-wait_for_guest_net_timeout = 0
+wait_for_guest_ip_timeout = -1
+wait_for_guest_net_timeout = -1
 wait_for_guest_net_routable = false
 network_interface {
   network_id = data.vsphere_network.network.id
@@ -264,8 +264,8 @@ num_cpus = var.vm-cpu
 memory = var.vm-ram3
 guest_id = var.vm-guest-id
 enable_disk_uuid = true
-wait_for_guest_ip_timeout = 120
-wait_for_guest_net_timeout = 0
+wait_for_guest_ip_timeout = -1
+wait_for_guest_net_timeout = -1
 wait_for_guest_net_routable = false
 network_interface {
   network_id = data.vsphere_network.network.id
